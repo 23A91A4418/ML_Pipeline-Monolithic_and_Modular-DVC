@@ -3,7 +3,5 @@ __pycache__/
 .dvc/cache/
 .dvc/tmp/
 model.joblib
-metrics.json
 models/
-metrics/
 repro_log.txt
