@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.dvc/cache/
+.dvc/tmp/
+model.joblib
+metrics.json
+models/
+metrics/
+repro_log.txt
