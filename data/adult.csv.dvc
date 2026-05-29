@@ -3,3 +3,4 @@ outs:
   size: 4007022
   hash: md5
   path: adult.csv
+  isexec: true

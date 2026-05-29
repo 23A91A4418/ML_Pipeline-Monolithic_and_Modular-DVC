@@ -1,0 +1,89 @@
+schema: '2.0'
+stages:
+  prepare:
+    cmd: python src/prepare.py --input data/adult.csv --output 
+      data/processed.csv
+    deps:
+    - path: data/adult.csv
+      hash: md5
+      md5: e912fb2eac151b8db0a79b70f89d062f
+      size: 4007022
+      isexec: true
+    - path: src/prepare.py
+      hash: md5
+      md5: ddc3e439d361ac68fe9b2cd3e719bd20
+      size: 503
+      isexec: true
+    outs:
+    - path: data/processed.csv
+      hash: md5
+      md5: f5df1657ba8b9547c0cd8928a005fdf2
+      size: 3569498
+  featurize:
+    cmd: python src/featurize.py --input data/processed.csv --output 
+      data/features.npz
+    deps:
+    - path: data/processed.csv
+      hash: md5
+      md5: f5df1657ba8b9547c0cd8928a005fdf2
+      size: 3569498
+    - path: src/featurize.py
+      hash: md5
+      md5: 99eb852dbafd7f5bff0766db9a088ce4
+      size: 1101
+      isexec: true
+    params:
+      params.yaml:
+        prepare.random_state: 42
+        prepare.test_size: 0.2
+    outs:
+    - path: data/features.npz
+      hash: md5
+      md5: 316d5e40fcdc97ead73041c648de63a1
+      size: 317904
+  train:
+    cmd: python src/train.py --input data/features.npz --output 
+      models/model.joblib
+    deps:
+    - path: data/features.npz
+      hash: md5
+      md5: 316d5e40fcdc97ead73041c648de63a1
+      size: 317904
+    - path: src/train.py
+      hash: md5
+      md5: 3e4a934c04d9bba205c3b3624e0b2d04
+      size: 1008
+      isexec: true
+    params:
+      params.yaml:
+        train.max_depth: 10
+        train.model_type: random_forest
+        train.n_estimators: 100
+        train.random_state: 42
+    outs:
+    - path: models/model.joblib
+      hash: md5
+      md5: b6865f451e0715c6ef148a60f06b7144
+      size: 5013129
+  evaluate:
+    cmd: python src/evaluate.py --model models/model.joblib --data 
+      data/features.npz --metrics metrics/scores.json
+    deps:
+    - path: data/features.npz
+      hash: md5
+      md5: 316d5e40fcdc97ead73041c648de63a1
+      size: 317904
+    - path: models/model.joblib
+      hash: md5
+      md5: b6865f451e0715c6ef148a60f06b7144
+      size: 5013129
+    - path: src/evaluate.py
+      hash: md5
+      md5: adcc2cb221c794efd3d3d85bac95f74e
+      size: 1039
+      isexec: true
+    outs:
+    - path: metrics/scores.json
+      hash: md5
+      md5: 1b8a20408d45f23b8b90535b3c173a95
+      size: 89
