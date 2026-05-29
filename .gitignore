@@ -5,3 +5,4 @@ __pycache__/
 model.joblib
 models/
 repro_log.txt
+.env
